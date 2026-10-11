@@ -2,8 +2,8 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // PROMPTED update: a new worker waits until the user taps "Update" (no unconditional skipWaiting),
 // so an open page never mixes old and new files.
-const VERSION = '1.12.1+202610102334';
-const C = 'melody-' + VERSION;
+const VERSION = '1.12.2+202610110227';
+const C = 'baby-' + VERSION;
 const SHELL = ['./', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
@@ -15,7 +15,7 @@ self.addEventListener('install', (e) => {
     await Promise.all(res.map((r, i) => c.put(SHELL[i], r)));
   })());
 });
-self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== C && (k.startsWith('melody-'))).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== C && (k.startsWith('baby-'))).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('message', (e) => { if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting(); });
 self.addEventListener('fetch', (e) => {
   const u = new URL(e.request.url);
