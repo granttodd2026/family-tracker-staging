@@ -2,9 +2,9 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // PROMPTED update: a new worker waits until the user taps "Update" (no unconditional skipWaiting),
 // so an open page never mixes old and new files.
-const VERSION = '1.12.2+202610110307';
+const VERSION = '1.13.0+202610110429';
 const C = 'baby-' + VERSION;
-const SHELL = ['./', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png'];
+const SHELL = ['./', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(C);
@@ -21,6 +21,8 @@ self.addEventListener('fetch', (e) => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
   if (e.request.mode === 'navigate') { e.respondWith(caches.open(C).then((c) => c.match('./')).then((r) => r || fetch(e.request))); return; }
+  // video (board keep-awake): iOS requests it with Range and needs 206 Partial Content, so serve ranges from the cache
+  if (/\.mp4$/.test(u.pathname)) { e.respondWith(rangeFromCache(e.request)); return; }
   // shell files: cache-first; anything else (e.g. version.txt): network, falling back to cache
   e.respondWith(caches.open(C).then(async (c) => {
     const hit = await c.match(e.request, { ignoreSearch: true });
@@ -47,3 +49,15 @@ self.addEventListener('notificationclick', (e) => {
     return self.clients.openWindow('./');
   })());
 });
+
+async function rangeFromCache(req) {
+  const c = await caches.open(C); let r = await c.match(req, { ignoreSearch: true });
+  if (!r) { try { r = await fetch(req.url); if (r.ok) await c.put(req.url, r.clone()); } catch { return fetch(req); } }
+  const range = req.headers.get('range'); if (!range || !r.ok) return r;
+  const buf = await r.arrayBuffer(), size = buf.byteLength, m = /bytes=(\d*)-(\d*)/.exec(range);
+  let start = m && m[1] ? Number(m[1]) : 0, end = m && m[2] ? Number(m[2]) : size - 1;
+  if (m && !m[1] && m[2]) { start = Math.max(0, size - Number(m[2])); end = size - 1; }
+  if (start >= size || end < start) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+  end = Math.min(end, size - 1);
+  return new Response(buf.slice(start, end + 1), { status: 206, headers: { 'Content-Type': 'video/mp4', 'Content-Range': `bytes ${start}-${end}/${size}`, 'Content-Length': String(end - start + 1), 'Accept-Ranges': 'bytes' } });
+}
