@@ -234,6 +234,10 @@ html.boardmode #main{padding:16px 24px 24px}
 .bcard{min-height:200px}.bsleep{min-height:180px}.bsetup{min-height:0}
 .bbig,.bago{min-height:1.1em}
 @media (orientation:landscape){.bleft{position:-webkit-sticky;position:sticky;top:16px}}
+.behindsheet{pointer-events:none}
+/* board: error / update banners at board scale and night-safe (never a bright fill at night) */
+html.boardmode .topbanner{font-size:28px;padding:16px 24px;gap:16px}html.boardmode .topbanner .btn{min-height:88px;min-width:120px;font-size:26px}
+:root[data-night] .topbanner{background:#1c0b08;color:#ffb8a6;border-bottom:2px solid #6a2a1c}:root[data-night] .topbanner .btn.primary{background:transparent;color:#ffb8a6;border:2px solid #ff8f70}
 /* 1.13 design review (App Designer board-review.md) */
 .bhead .btoggle{order:9;margin-left:auto} /* top-right corner, away from the what's-next button */
 .bstale{font-size:28px;color:var(--mute)}.bstale:empty{display:none}
