@@ -2,9 +2,9 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // PROMPTED update: a new worker waits until the user taps "Update" (no unconditional skipWaiting),
 // so an open page never mixes old and new files.
-const VERSION = '1.13.1+202610111715';
+const VERSION = '1.13.1+202610111754';
 const C = 'baby-' + VERSION;
-const SHELL = ['./', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
+const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(C);
