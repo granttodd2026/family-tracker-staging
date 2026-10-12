@@ -105,6 +105,10 @@ nav#nav button span{font-size:24px}nav#nav button[aria-current=page]{color:var(-
 #toast.show{transform:none;opacity:1;visibility:visible;pointer-events:auto}#toast span{flex:1}
 #toast button{background:transparent;color:var(--bg);border:1.5px solid var(--bg);border-radius:10px;min-height:44px;padding:4px 12px;font-weight:700}
 #sheet{position:fixed;inset:0;z-index:10}
+#welcome{position:fixed;inset:0;z-index:30;background:var(--bg);color:var(--ink);overflow:auto;display:flex;justify-content:center}#welcome[hidden]{display:none}
+.wbox{display:flex;flex-direction:column;justify-content:center;gap:16px;min-height:100%;max-width:520px;padding:calc(var(--sat,0px) + 16px) 20px calc(var(--sab,0px) + 16px);box-sizing:border-box}
+.wbox h1{text-align:center}.wart{font-size:56px;text-align:center}.wsign{text-align:right}.wfine{text-align:center;margin:0;font-size:16px}
+.wlink{color:var(--pri);font-weight:700;text-decoration:underline;display:inline-block;min-height:44px;line-height:44px;padding:0 2px}
 .sheetbg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .sheetbox{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:14px 16px calc(20px + env(safe-area-inset-bottom));max-width:600px;margin:0 auto;-webkit-overflow-scrolling:touch}
 .sheethead{display:flex;justify-content:space-between;align-items:center;position:sticky;top:-14px;background:var(--bg);padding:6px 0;z-index:1}.sheethead h2{margin:0}
