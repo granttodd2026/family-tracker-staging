@@ -29,9 +29,9 @@
 } catch (e) {} })();
 </script>
 <style>
-:root{--sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom);--navh:72px;--bg:#f7efe9;--card:#fff;--ink:#231c24;--mute:#6b5f69;--line:#e6d9d1;--pri:#7a3e8f;--priink:#fff;--feed:#fde4d8;--diaper:#dcefff;--mom:#f3e1f7;--ok:#1f7a4a;--warn:#a35a00;--bad:#b3261e;--badbg:#fde7e5;--chip:#f1e6df;--shadow:0 1px 3px rgba(0,0,0,.08)}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b1720;--card:#28222e;--ink:#f3ecf2;--mute:#b8aab5;--line:#3d3444;--pri:#c99be0;--priink:#1b1720;--feed:#4a3128;--diaper:#22384d;--mom:#3d2a47;--ok:#7fd7a5;--warn:#f0b35c;--bad:#ff8a80;--badbg:#4a2422;--chip:#352d3c;--shadow:none}}
-:root[data-theme=dark]{--bg:#1b1720;--card:#28222e;--ink:#f3ecf2;--mute:#b8aab5;--line:#3d3444;--pri:#c99be0;--priink:#1b1720;--feed:#4a3128;--diaper:#22384d;--mom:#3d2a47;--ok:#7fd7a5;--warn:#f0b35c;--bad:#ff8a80;--badbg:#4a2422;--chip:#352d3c;--shadow:none}
+:root{--link:#0A66D8;--sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom);--navh:72px;--bg:#f7efe9;--card:#fff;--ink:#231c24;--mute:#6b5f69;--line:#e6d9d1;--pri:#7a3e8f;--priink:#fff;--feed:#fde4d8;--diaper:#dcefff;--mom:#f3e1f7;--ok:#1f7a4a;--warn:#a35a00;--bad:#b3261e;--badbg:#fde7e5;--chip:#f1e6df;--shadow:0 1px 3px rgba(0,0,0,.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--link:#8AB4FF;--bg:#1b1720;--card:#28222e;--ink:#f3ecf2;--mute:#b8aab5;--line:#3d3444;--pri:#c99be0;--priink:#1b1720;--feed:#4a3128;--diaper:#22384d;--mom:#3d2a47;--ok:#7fd7a5;--warn:#f0b35c;--bad:#ff8a80;--badbg:#4a2422;--chip:#352d3c;--shadow:none}}
+:root[data-theme=dark]{--link:#8AB4FF;--bg:#1b1720;--card:#28222e;--ink:#f3ecf2;--mute:#b8aab5;--line:#3d3444;--pri:#c99be0;--priink:#1b1720;--feed:#4a3128;--diaper:#22384d;--mom:#3d2a47;--ok:#7fd7a5;--warn:#f0b35c;--bad:#ff8a80;--badbg:#4a2422;--chip:#352d3c;--shadow:none}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 /* v1.12.1 fixed app shell: the document never scrolls; only #main does. The tab bar is a normal flex item at the
    bottom (no position:fixed), so iOS standalone momentum scroll / re-renders cannot detach it mid-screen. */
@@ -108,8 +108,8 @@ nav#nav button span{font-size:24px}nav#nav button[aria-current=page]{color:var(-
 #welcome{position:fixed;inset:0;z-index:30;background:var(--bg);color:var(--ink);overflow:auto;display:flex;justify-content:center}#welcome[hidden]{display:none}
 .wbox{display:flex;flex-direction:column;justify-content:center;gap:16px;min-height:100%;max-width:520px;padding:calc(var(--sat,0px) + 16px) 20px calc(var(--sab,0px) + 16px);box-sizing:border-box}
 .wbox h1{text-align:center}.wart{font-size:56px;text-align:center}.wsign{text-align:right}.wfine{text-align:center;margin:0;font-size:16px}
-.wterms h1{text-align:left;font-size:28px;margin:8px 0 4px}.wterms h2{font-size:21px;margin:22px 0 10px;color:var(--pri)}.wterms .ver{color:var(--mute);font-size:16px;margin:0 0 12px}.wterms .intro{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:0}.wterms ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}.wterms li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px}.wterms strong{display:block;margin-bottom:2px}.wterms a{color:var(--pri);text-decoration:underline;font-weight:600;word-break:break-word;display:inline-block;min-height:44px;line-height:44px}
-.wlink{color:var(--pri);font-weight:700;text-decoration:underline;display:inline-block;min-height:44px;line-height:44px;padding:0 2px}
+.wterms h1{text-align:left;font-size:28px;margin:8px 0 4px}.wterms h2{font-size:21px;margin:22px 0 10px;color:var(--pri)}.wterms .ver{color:var(--mute);font-size:16px;margin:0 0 12px}.wterms .intro{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:0}.wterms ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}.wterms li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px}.wterms strong{display:block;margin-bottom:2px}.wterms a{color:var(--link);text-decoration:underline;font-weight:600;word-break:break-word;display:inline-block;min-height:44px;line-height:44px}
+.wlink{color:var(--link);font-weight:700;text-decoration:underline;display:inline-block;min-height:44px;line-height:44px;padding:0 2px}
 .sheetbg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .sheetbox{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:14px 16px calc(20px + env(safe-area-inset-bottom));max-width:600px;margin:0 auto;-webkit-overflow-scrolling:touch}
 .sheethead{display:flex;justify-content:space-between;align-items:center;position:sticky;top:-14px;background:var(--bg);padding:6px 0;z-index:1}.sheethead h2{margin:0}
@@ -184,7 +184,7 @@ details{margin:10px 0}summary{min-height:44px;display:flex;align-items:center;fo
 .hrec{display:flex;align-items:center;gap:8px}.hrec span{flex:1}.hboard{margin-top:16px}
 a.entry.dashlink{color:var(--ink);text-decoration:none} /* links default to UA blue: fails contrast on the dark card */
 :root[data-night] .hpill.on{background:var(--card);color:var(--ink);border-color:var(--pri)} /* night: no bright fill */
-:root[data-night]{--bg:#0d0504;--card:#1c0b08;--ink:#ffb8a6;--mute:#d9937f;--line:#4a1f17;--pri:#ff8f70;--priink:#0d0504;--feed:#2a100b;--diaper:#22100c;--mom:#26100d;--ok:#ffb8a6;--warn:#ffb070;--bad:#ff9a8a;--badbg:#2e0d0a;--chip:#26100c;--shadow:none;--nbbg:#22100c;--nbink:#ffb8a6;--nbsoon:#2a140c;--nbsoonink:#ffc09a;--nbsoonline:#7a3a24;--nbdue:#331509;--nbdueink:#ffc08a;--nbdueline:#8f4a2e}
+:root[data-night]{--link:#ffd0c0;--bg:#0d0504;--card:#1c0b08;--ink:#ffb8a6;--mute:#d9937f;--line:#4a1f17;--pri:#ff8f70;--priink:#0d0504;--feed:#2a100b;--diaper:#22100c;--mom:#26100d;--ok:#ffb8a6;--warn:#ffb070;--bad:#ff9a8a;--badbg:#2e0d0a;--chip:#26100c;--shadow:none;--nbbg:#22100c;--nbink:#ffb8a6;--nbsoon:#2a140c;--nbsoonink:#ffc09a;--nbsoonline:#7a3a24;--nbdue:#331509;--nbdueink:#ffc08a;--nbdueline:#8f4a2e}
 :root[data-night] #toast{background:#2a0f0a;color:#ffc8b8;border:1px solid #6a2a1c}:root[data-night] #toast button{color:#ffd8cc;background:transparent}
 :root[data-night] img{filter:sepia(1) saturate(3) hue-rotate(-30deg) brightness(.7)}
 .nightrow{display:flex;justify-content:flex-end;margin:6px 0 -4px}
