@@ -2,7 +2,7 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // PROMPTED update: a new worker waits until the user taps "Update" (no unconditional skipWaiting),
 // so an open page never mixes old and new files.
-const VERSION = '1.13.3+202610112135';
+const VERSION = '1.13.4+202610120458';
 const C = 'baby-' + VERSION;
 const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 self.addEventListener('install', (e) => {
@@ -36,7 +36,7 @@ self.addEventListener('fetch', (e) => {
 async function bumpUsage(k) { try { const c = await caches.open('mt-usage'); const r = await c.match('push'); const o = r ? await r.json() : {}; o[k] = (o[k] || 0) + 1; await c.put('push', new Response(JSON.stringify(o))); } catch {} }
 self.addEventListener('push', (e) => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch { d = { title: e.data && e.data.text() }; }
-  e.waitUntil(Promise.all([bumpUsage('delivered:' + String(d.tag || 'reminder').replace(/^med-.*/, 'med').replace(/[^a-z0-9-]/gi, '').slice(0, 20)), self.registration.showNotification(d.title || 'Reminder', {
+  e.waitUntil(Promise.all([bumpUsage('delivered:' + String(d.tag || 'reminder').replace(/^med-.*/, 'med').replace(/[^a-z0-9-]/gi, '').slice(0, 20)), self.registration.showNotification(d.title || 'Baby App', {
     body: d.body || '', tag: d.tag || 'reminder', renotify: !d.quiet, silent: !!d.quiet, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', data: d.data || {},
   })]));
 });

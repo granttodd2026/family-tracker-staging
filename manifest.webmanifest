@@ -1,6 +1,6 @@
 {
-  "name": "Family Baby Tracker",
-  "short_name": "Baby",
+  "name": "Baby App",
+  "short_name": "Baby App",
   "description": "Private family tracker for feeds, diapers, meds, recovery, notes and shopping.",
   "scope": "./",
   "display": "standalone",
