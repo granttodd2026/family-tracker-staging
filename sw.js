@@ -2,7 +2,7 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // 1.13.10 AUTO update: a new worker skips waiting once its whole shell is cached, so the next open runs it. A page that
 // is already open keeps its old code in memory, and app.js reloads it onto the new version only at a safe moment.
-const VERSION = '1.13.12+202610130403';
+const VERSION = '1.13.13+202610130405';
 const C = 'baby-' + VERSION;
 const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
 // 1.13.11 (hotfix): install must not fail on a briefly stale CDN copy (GitHub Pages edges cache 600 s) or a flaky network.
