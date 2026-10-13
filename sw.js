@@ -2,22 +2,47 @@
 // Versioned cache (stamped by build.sh), cache-first shell (instant and immune to weak Wi-Fi), and a
 // 1.13.10 AUTO update: a new worker skips waiting once its whole shell is cached, so the next open runs it. A page that
 // is already open keeps its old code in memory, and app.js reloads it onto the new version only at a safe moment.
-const VERSION = '1.13.10+202610122210';
+const VERSION = '1.13.12+202610130313';
 const C = 'baby-' + VERSION;
 const SHELL = ['./', 'app.js', 'nonholders.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'nosleep.mp4'];
+// 1.13.11 (hotfix): install must not fail on a briefly stale CDN copy (GitHub Pages edges cache 600 s) or a flaky network.
+// Each file is fetched with no-store + a per-version query (a CDN cache miss, so origin-fresh), retried with backoff; the
+// app.js version check retries too. nosleep.mp4 (board keep-awake) is optional here and cached on first use.
+const REQUIRED = SHELL.filter((u) => !/\.mp4$/.test(u));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function fresh(u, i) { return fetch(new Request(u + (u.includes('?') ? '&' : '?') + 'sw=' + encodeURIComponent(VERSION) + '-' + i + '-' + Date.now(), { cache: 'no-store' })); }
+async function getChecked(u) {
+  let last;
+  for (let i = 0; i < 4; i++) {
+    try { const r = await fresh(u, i); if (r.ok && (u !== 'app.js' || (await r.clone().text()).includes(VERSION))) return r; last = new Error(u + ' ' + r.status + (r.ok ? ' (stale)' : '')); } catch (e) { last = e; }
+    await sleep(1000 * (i + 1));
+  }
+  throw last || new Error('fetch ' + u);
+}
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(C);
-    // bypass the HTTP cache so a stale app.js can never be paired with this worker
-    const res = await Promise.all(SHELL.map((u) => fetch(new Request(u, { cache: 'reload' }))));
-    if (res.some((r) => !r.ok)) throw new Error('shell fetch failed');
-    if (!(await res[1].clone().text()).includes(VERSION)) throw new Error('app.js does not match ' + VERSION);
-    await Promise.all(res.map((r, i) => c.put(SHELL[i], r)));
+    const res = await Promise.all(REQUIRED.map(getChecked)); // all-or-nothing: never pair this worker with a stale shell
+    await Promise.all(res.map((r, i) => c.put(REQUIRED[i], r)));
+    try { const v = await fresh('nosleep.mp4', 0); if (v.ok) await c.put('nosleep.mp4', v); } catch {}
     await self.skipWaiting(); // 1.13.10: only after the full, version-matched shell is in the new cache
   })());
 });
-self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== C && (k.startsWith('baby-'))).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
-self.addEventListener('message', (e) => { if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting(); });
+// After taking over, 1.13.10+ pages reload themselves at a safe moment (controllerchange). Older pages can't be reloaded
+// safely from here (no way to know they're mid-entry), so their own Update tap does it (see SKIP_WAITING below).
+let activated = false;
+self.addEventListener('activate', (e) => { e.waitUntil((async () => {
+  const ks = await caches.keys(); await Promise.all(ks.filter((k) => k !== C && k.startsWith('baby-')).map((k) => caches.delete(k)));
+  await self.clients.claim(); activated = true;
+})()); });
+self.addEventListener('message', (e) => {
+  const d = e.data || {}, src = e.source;
+  if (d.type === 'SKIP_WAITING') {
+    if (!(activated || (self.registration.active && !self.registration.waiting))) { self.skipWaiting(); return; }
+    // already active: an older page's "Update" tap (its controllerchange already passed) -> reload that page onto this version
+    if (src && src.navigate) e.waitUntil(src.navigate(src.url).catch(() => {}));
+  }
+});
 self.addEventListener('fetch', (e) => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
